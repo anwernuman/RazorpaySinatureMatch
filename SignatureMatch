@@ -1,0 +1,34 @@
+using System;
+using System.Security.Cryptography;
+
+namespace ConsoleApp
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Create a new SHA256 instance
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                // The body to sign
+                string body = "This is the body to sign";
+                // The value to include in the signature
+                string value = "Some value";
+
+                // Calculate the signature
+                byte[] signature = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(body + value));
+
+                // Verify the signature
+                string otherSignature = "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08";
+                if (otherSignature == BitConverter.ToString(signature).Replace("-", "").ToLower())
+                {
+                    Console.WriteLine("Signature matches");
+                }
+                else
+                {
+                    Console.WriteLine("Signature does not match");
+                }
+            }
+        }
+    }
+}
